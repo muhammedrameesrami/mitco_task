@@ -1,18 +1,31 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
+import 'package:mitco_task/features/home/controller/home_controller.dart';
+import 'package:mitco_task/features/home/repository/home_repository.dart';
+import 'package:mitco_task/features/model_class/order_model_class.dart';
 
 import '../../../core/variables/mediaQuery.dart';
 import 'data_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key});
+  final OrderModel orderModel;
+  const HomeScreen({Key? key, required this.orderModel});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int count=0;
+  // @override
+  // Future<void> initState() async {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   await HomeController(repository: HomeRepository(firestore: FirebaseFirestore.instance)).getCount(orderId: widget.orderModel.orderId);
+  // }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Hey, Neymer',
+                                  'Hey, ${widget.orderModel.accountHolderName}',
                                   style: TextStyle(
                                       color: Colors.white, fontSize: w * 0.06),
                                 ),
@@ -118,8 +131,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    SizedBox(width: w*0.02,),
-
+                    SizedBox(
+                      width: w * 0.02,
+                    ),
                     Container(
                       height: h * 0.17,
                       width: w * 0.31,
@@ -161,8 +175,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
-                    SizedBox(width: w*0.02,),
-
+                    SizedBox(
+                      width: w * 0.02,
+                    ),
                     Container(
                       height: h * 0.17,
                       width: w * 0.31,
@@ -198,13 +213,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               decoration: BoxDecoration(
                                   color: Colors.green,
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
+                                      BorderRadius.all(Radius.circular(10))),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(width: w*0.02,),
+                    SizedBox(
+                      width: w * 0.02,
+                    ),
                     Container(
                       height: h * 0.17,
                       width: w * 0.31,
@@ -240,7 +257,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               decoration: BoxDecoration(
                                   color: Colors.red,
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
+                                      BorderRadius.all(Radius.circular(10))),
                             ),
                           ),
                         ],
@@ -298,104 +315,129 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 height: h * 0.4,
                 width: w,
-                child: ListView.builder(
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.only(
-                          left: w * 0.05, right: w * 0.05, bottom: w * 0.03),
-                      child: InkWell(onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>DataDetailScreen()));
-                      },
-                        child: Container(
-                          width: w,
-                          decoration: BoxDecoration(
-                              color: Colors.white12,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: h * 0.02,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    '  Refer No : 65527838',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: w * 0.04),
-                                  ),
-                                  Container(
-                                    height: h * 0.05,
-                                    width: w * 0.15,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Colors.yellow),
-                                    child: Center(
-                                        child: Text(
-                                      '  Finish',
-                                      style: TextStyle(
-                                        color: Colors.white,
+                child: StreamBuilder<List<OrderModel>>(
+                    stream: HomeController(
+                            repository: HomeRepository(
+                                firestore: FirebaseFirestore.instance))
+                        .getOrder(orderId: widget.orderModel.orderId),
+                    builder: (context, snapshot) {
+                      if(snapshot.connectionState==ConnectionState.waiting){
+                        return Center(child: CircularProgressIndicator(),);
+                      }else if(!snapshot.hasData||snapshot.data==null){
+                        return Center(child: Text('No User!.....'),);
+                      }else {
+                        var data=snapshot.data!;
+                        return ListView.builder(itemCount: data.length,
+                          itemBuilder: (context, index) {
+                         final order=data[index];
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                  left: w * 0.05,
+                                  right: w * 0.05,
+                                  bottom: w * 0.03),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              DataDetailScreen(orderModel:order)));
+                                },
+                                child: Container(
+                                  width: w,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white12,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: h * 0.02,
                                       ),
-                                    )),
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: h * 0.01,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    '  Trade :',
-                                    style: TextStyle(
-                                        color: Colors.white38,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: w * 0.04),
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            '  Refer No : ${order.orderId}',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: w * 0.04),
+                                          ),
+                                          Container(
+                                            height: h * 0.05,
+                                            width: w * 0.15,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                BorderRadius.circular(10),
+                                                color: order.status=='pending'?Colors.yellow:order.status=='succes'?Colors.green:Colors.red),
+                                            child: Center(
+                                                child: Text(
+                                                  order.status,
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                )),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: h * 0.01,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            '  Trade :',
+                                            style: TextStyle(
+                                                color: Colors.white38,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: w * 0.04),
+                                          ),
+                                          Text(
+                                            '${order.trade} INR  ',
+                                            style: TextStyle(
+                                                color: Colors.blue,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: w * 0.04),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: h * 0.01,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            '  Date :',
+                                            style: TextStyle(
+                                                color: Colors.white38,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: w * 0.04),
+                                          ),
+                                          Text(
+                                           DateFormat.yMMMMd().format(order.date),
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: w * 0.04),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: h * 0.02,
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    '55 uts=55844 INR  ',
-                                    style: TextStyle(
-                                        color: Colors.blue,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: w * 0.04),
-                                  ),
-                                ],
+                                ),
                               ),
-                              SizedBox(
-                                height: h * 0.01,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    '  Date :',
-                                    style: TextStyle(
-                                        color: Colors.white38,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: w * 0.04),
-                                  ),
-                                  Text(
-                                    '12-aug-23,10:30  ',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: w * 0.04),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: h * 0.02,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                            );
+                          },
+                        );
+                      } }),
               ),
             ],
           ),

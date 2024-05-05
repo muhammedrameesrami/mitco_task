@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/variables/mediaQuery.dart';
 import '../../home/screen/home_screen.dart';
+import '../../model_class/order_model_class.dart';
 
 
 class BottomNavigationMobile extends StatefulWidget {
@@ -16,15 +17,13 @@ class BottomNavigationMobile extends StatefulWidget {
 
 class _BottomNavigationMobileState extends State<BottomNavigationMobile>
     with TickerProviderStateMixin {
-
+ OrderModel? orderModel;
   int _selectedIndex = 0;
 
   bNavItems(int index) {
     final List<Widget> widgetOptions = <Widget>[
-     HomeScreen(),
-     HomeScreen(),
-     HomeScreen(),
-     HomeScreen(),
+     HomeScreen(orderModel:orderModel!),
+
     ];
     return widgetOptions[index];
   }

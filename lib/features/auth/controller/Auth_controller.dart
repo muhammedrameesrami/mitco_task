@@ -8,7 +8,7 @@ class AuthController{
   final AuthRepository _repository;
   AuthController({required AuthRepository repository}):
       _repository=repository;
-  Future<Either<Failure ,OrderModel>> signIn({required String email,required String password})async{
+  Future<Either<Failure ,OrderModel?>> signIn({required String email,required String password})async{
     return _repository.signIn(email: email, password: password);
   }
 }

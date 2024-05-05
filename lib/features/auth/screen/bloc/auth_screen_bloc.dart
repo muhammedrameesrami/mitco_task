@@ -22,9 +22,7 @@ class AuthScreenBloc extends Bloc<AuthScreenEvent, AuthScreenState> {
           if(r==null){
             return emit(AuthFailure(message: 'user is null'));
           }else {
-            SharedPreferences preferences = await SharedPreferences.getInstance();
-            preferences.setString('orderId', r.orderId);
-            // event.context.read<OrderModelBloc>().add(OrderEvent(orderModel: r));
+
             print(r.toMap());
             print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
             return emit(AuthSuccess(orderModel: r));

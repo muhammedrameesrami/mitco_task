@@ -14,7 +14,7 @@ class AuthRepository {
       : _firebaseAuth = firebaseAuth,
         _firestore = firestore;
 
-  Future<Either<Failure, OrderModel>> signIn(
+  Future<Either<Failure, OrderModel?>> signIn(
       {required String email, required String password}) async {
     try {
 
