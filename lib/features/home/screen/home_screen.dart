@@ -19,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int count=0;
+  int count = 0;
   // @override
   // Future<void> initState() async {
   //   // TODO: implement initState
@@ -38,233 +38,307 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                color: Colors.blueAccent,
-                height: h * 0.34,
-                width: w,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      height: h * 0.12,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: w * 0.05),
-                          child: SizedBox(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+              Stack(
+                children: [
+                  Container(
+                    height: h * .45,
+                    color: Colors.transparent,
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: h * .1),
+                      child: Container(
+                        color: Colors.blueAccent,
+                        height: h * 0.34,
+                        width: w,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: h * 0.12,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  'Hey, ${widget.orderModel.accountHolderName}',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: w * 0.06),
+                                Padding(
+                                  padding: EdgeInsets.only(left: w * 0.05),
+                                  child: SizedBox(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Hey, ${widget.orderModel.accountHolderName}',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: w * 0.06),
+                                        ),
+                                        Text(
+                                          'Welcome to Our App',
+                                          style: TextStyle(
+                                              color: Colors.white30,
+                                              fontSize: w * 0.045),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                                Text(
-                                  'Welcome to Our App',
-                                  style: TextStyle(
-                                      color: Colors.white30,
-                                      fontSize: w * 0.045),
+                                Padding(
+                                  padding: EdgeInsets.only(right: w * 0.05),
+                                  child: Container(
+                                    child: Column(
+                                      children: [
+                                        Stack(
+                                          children: [
+                                            Positioned(
+                                              child: CircleAvatar(
+                                                backgroundColor: Colors.white38,
+                                                radius: w * 0.15,
+                                              ),
+                                            ),
+                                            Positioned(
+                                              left: w * 0.006,
+                                              top: h * 0.004,
+                                              child: CircleAvatar(
+                                                backgroundColor:
+                                                    Colors.blueAccent,
+                                                radius: w * 0.145,
+                                              ),
+                                            ),
+                                            Positioned(
+                                              top: h * 0.012,
+                                              left: w * 0.02,
+                                              child: CircleAvatar(
+                                                backgroundColor: Colors.white38,
+                                                radius: w * 0.13,
+                                              ),
+                                            ),
+                                            Positioned(
+                                              top: h * 0.016,
+                                              left: w * 0.03,
+                                              child: CircleAvatar(
+                                                backgroundColor:
+                                                    Colors.blueAccent,
+                                                radius: w * 0.12,
+                                                child:
+                                                    Icon(CupertinoIcons.person),
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
-                          ),
+                          ],
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(right: w * 0.05),
-                          child: Container(
-                            child: Column(
-                              children: [
-                                Stack(
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SizedBox(
+                          width: w * 0.02,
+                        ),
+                        FutureBuilder<AggregateQuerySnapshot>(
+                            future: HomeController(
+                                    repository: HomeRepository(
+                                        firestore: FirebaseFirestore.instance))
+                                .getCount(
+                                    orderId: widget.orderModel.orderId,
+                                    status:'pending'),
+                            builder: (context, snapshot) {
+                              int data = snapshot.data!.count!;
+                              if(snapshot.hasError){
+                                return Text('error');
+                              }
+                              if(snapshot.connectionState == ConnectionState.done){
+                                return Container(
+                                  height: h * 0.17,
+                                  width: w * 0.31,
+                                  decoration: BoxDecoration(
+                                      color: Color(0xff101015),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.stretch,
+                                    children: [
+                                      Center(
+                                        child: Text(
+                                          'Pending',
+                                          style: TextStyle(
+                                              color: Colors.white60,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: w * 0.045),
+                                        ),
+                                      ),
+                                      Center(
+                                        child: Text(
+                                          data.toString(),
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: w * 0.045),
+                                        ),
+                                      ),
+                                      Center(
+                                        child: Container(
+                                          height: h * 0.01,
+                                          width: w * 0.07,
+                                          decoration: BoxDecoration(
+                                              color: Colors.blueAccent,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10))),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }else{
+                                return Center(child: CircularProgressIndicator(),);
+                              }
+
+                            }),
+                        SizedBox(
+                          width: w * 0.02,
+                        ),
+                        FutureBuilder<AggregateQuerySnapshot>(future: HomeController(
+                            repository: HomeRepository(
+                                firestore: FirebaseFirestore.instance))
+                            .getCount(
+                            orderId: widget.orderModel.orderId,
+                            status:'succes'),
+                          builder: (context,snapshot) {
+                            int data = snapshot.data!.count!;
+                            if(snapshot.hasError){
+                              return Text('error');
+                            }
+                            if(snapshot.connectionState==ConnectionState.done){
+                              return Container(
+                                height: h * 0.17,
+                                width: w * 0.31,
+                                decoration: BoxDecoration(
+                                    color: Color(0xff101015),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
                                   children: [
-                                    Positioned(
-                                      child: CircleAvatar(
-                                        backgroundColor: Colors.white38,
-                                        radius: w * 0.15,
+                                    Center(
+                                      child: Text(
+                                        'Complete',
+                                        style: TextStyle(
+                                            color: Colors.white60,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: w * 0.045),
                                       ),
                                     ),
-                                    Positioned(
-                                      left: w * 0.006,
-                                      top: h * 0.004,
-                                      child: CircleAvatar(
-                                        backgroundColor: Colors.blueAccent,
-                                        radius: w * 0.145,
+                                    Center(
+                                      child: Text(
+                                        data.toString(),
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: w * 0.045),
                                       ),
                                     ),
-                                    Positioned(
-                                      top: h * 0.012,
-                                      left: w * 0.02,
-                                      child: CircleAvatar(
-                                        backgroundColor: Colors.white38,
-                                        radius: w * 0.13,
-                                      ),
-                                    ),
-                                    Positioned(
-                                      top: h * 0.016,
-                                      left: w * 0.03,
-                                      child: CircleAvatar(
-                                        backgroundColor: Colors.blueAccent,
-                                        radius: w * 0.12,
-                                        child: Icon(CupertinoIcons.person),
+                                    Center(
+                                      child: Container(
+                                        height: h * 0.01,
+                                        width: w * 0.07,
+                                        decoration: BoxDecoration(
+                                            color: Colors.green,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10))),
                                       ),
                                     ),
                                   ],
-                                )
-                              ],
-                            ),
-                          ),
+                                ),
+                              );
+                            }
+                            else{
+                              return Center(child: CircularProgressIndicator(),);
+                            }
+
+                          }
+                        ),
+                        SizedBox(
+                          width: w * 0.02,
+                        ),
+                        FutureBuilder<AggregateQuerySnapshot>(future: HomeController(
+                            repository: HomeRepository(
+                                firestore: FirebaseFirestore.instance))
+                            .getCount(
+                            orderId: widget.orderModel.orderId,
+                            status:'cancel'),
+                          builder: (context,snapshot) {
+                            int data = snapshot.data!.count!;
+                            if(snapshot.hasError){
+                              return Text('error');
+                            }
+                            if(snapshot.connectionState==ConnectionState.done){
+                              return Container(
+                                height: h * 0.17,
+                                width: w * 0.31,
+                                decoration: BoxDecoration(
+                                    color: Color(0xff101015),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                                  children: [
+                                    Center(
+                                      child: Text(
+                                        'Canceled',
+                                        style: TextStyle(
+                                            color: Colors.white60,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: w * 0.045),
+                                      ),
+                                    ),
+                                    Center(
+                                      child: Text(
+                                        data.toString(),
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: w * 0.045),
+                                      ),
+                                    ),
+                                    Center(
+                                      child: Container(
+                                        height: h * 0.01,
+                                        width: w * 0.07,
+                                        decoration: BoxDecoration(
+                                            color: Colors.red,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10))),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }else{
+                              return Center(child: CircularProgressIndicator(),);
+                            }
+
+                          }
                         ),
                       ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               SizedBox(
                 height: h * 0.02,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      width: w * 0.02,
-                    ),
-                    Container(
-                      height: h * 0.17,
-                      width: w * 0.31,
-                      decoration: BoxDecoration(
-                          color: Colors.white12,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Center(
-                            child: Text(
-                              'Pending',
-                              style: TextStyle(
-                                  color: Colors.white38,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: w * 0.045),
-                            ),
-                          ),
-                          Center(
-                            child: Text(
-                              '05',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: w * 0.045),
-                            ),
-                          ),
-                          Center(
-                            child: Container(
-                              height: h * 0.01,
-                              width: w * 0.07,
-                              decoration: BoxDecoration(
-                                  color: Colors.blueAccent,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: w * 0.02,
-                    ),
-                    Container(
-                      height: h * 0.17,
-                      width: w * 0.31,
-                      decoration: BoxDecoration(
-                          color: Colors.white12,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Center(
-                            child: Text(
-                              'Complete',
-                              style: TextStyle(
-                                  color: Colors.white38,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: w * 0.045),
-                            ),
-                          ),
-                          Center(
-                            child: Text(
-                              '12',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: w * 0.045),
-                            ),
-                          ),
-                          Center(
-                            child: Container(
-                              height: h * 0.01,
-                              width: w * 0.07,
-                              decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: w * 0.02,
-                    ),
-                    Container(
-                      height: h * 0.17,
-                      width: w * 0.31,
-                      decoration: BoxDecoration(
-                          color: Colors.white12,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Center(
-                            child: Text(
-                              'Canceled',
-                              style: TextStyle(
-                                  color: Colors.white38,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: w * 0.045),
-                            ),
-                          ),
-                          Center(
-                            child: Text(
-                              '110',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: w * 0.045),
-                            ),
-                          ),
-                          Center(
-                            child: Container(
-                              height: h * 0.01,
-                              width: w * 0.07,
-                              decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10))),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
               ),
               SizedBox(
                 height: h * 0.02,
@@ -321,15 +395,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                 firestore: FirebaseFirestore.instance))
                         .getOrder(orderId: widget.orderModel.orderId),
                     builder: (context, snapshot) {
-                      if(snapshot.connectionState==ConnectionState.waiting){
-                        return Center(child: CircularProgressIndicator(),);
-                      }else if(!snapshot.hasData||snapshot.data==null){
-                        return Center(child: Text('No User!.....'),);
-                      }else {
-                        var data=snapshot.data!;
-                        return ListView.builder(itemCount: data.length,
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (!snapshot.hasData || snapshot.data == null) {
+                        return Center(
+                          child: Text('No User!.....'),
+                        );
+                      } else {
+                        var data = snapshot.data!;
+                        return ListView.builder(
+                          itemCount: data.length,
                           itemBuilder: (context, index) {
-                         final order=data[index];
+                            final order = data[index];
                             return Padding(
                               padding: EdgeInsets.only(
                                   left: w * 0.05,
@@ -341,7 +420,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              DataDetailScreen(orderModel:order)));
+                                              DataDetailScreen(
+                                                  orderModel: order)));
                                 },
                                 child: Container(
                                   width: w,
@@ -355,7 +435,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                             '  Refer No : ${order.orderId}',
@@ -369,15 +449,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                             width: w * 0.15,
                                             decoration: BoxDecoration(
                                                 borderRadius:
-                                                BorderRadius.circular(10),
-                                                color: order.status=='pending'?Colors.yellow:order.status=='succes'?Colors.green:Colors.red),
+                                                    BorderRadius.circular(10),
+                                                color: order.status == 'pending'
+                                                    ? Colors.yellow
+                                                    : order.status == 'succes'
+                                                        ? Colors.green
+                                                        : Colors.red),
                                             child: Center(
                                                 child: Text(
-                                                  order.status,
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                  ),
-                                                )),
+                                              order.status,
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                              ),
+                                            )),
                                           )
                                         ],
                                       ),
@@ -386,7 +470,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                             '  Trade :',
@@ -409,7 +493,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
                                             '  Date :',
@@ -419,7 +503,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 fontSize: w * 0.04),
                                           ),
                                           Text(
-                                           DateFormat.yMMMMd().format(order.date),
+                                            DateFormat.yMMMMd()
+                                                .format(order.date),
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.w700,
@@ -437,7 +522,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             );
                           },
                         );
-                      } }),
+                      }
+                    }),
               ),
             ],
           ),

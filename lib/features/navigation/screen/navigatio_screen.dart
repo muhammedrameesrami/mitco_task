@@ -1,3 +1,4 @@
+import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,8 +9,8 @@ import '../../model_class/order_model_class.dart';
 
 
 class BottomNavigationMobile extends StatefulWidget {
-
-  const BottomNavigationMobile({super.key});
+final OrderModel orderModel;
+  const BottomNavigationMobile({super.key,required this.orderModel});
 
   @override
   _BottomNavigationMobileState createState() => _BottomNavigationMobileState();
@@ -17,12 +18,15 @@ class BottomNavigationMobile extends StatefulWidget {
 
 class _BottomNavigationMobileState extends State<BottomNavigationMobile>
     with TickerProviderStateMixin {
- OrderModel? orderModel;
+
   int _selectedIndex = 0;
 
   bNavItems(int index) {
     final List<Widget> widgetOptions = <Widget>[
-     HomeScreen(orderModel:orderModel!),
+     HomeScreen(orderModel:widget.orderModel!),
+     HomeScreen(orderModel:widget.orderModel!),
+     HomeScreen(orderModel:widget.orderModel!),
+     HomeScreen(orderModel:widget.orderModel!),
 
     ];
     return widgetOptions[index];
@@ -66,53 +70,31 @@ class _BottomNavigationMobileState extends State<BottomNavigationMobile>
       child: Scaffold(
         extendBody: true,
         body:bNavItems(_selectedIndex, ),
-        bottomNavigationBar: DotNavigationBar(
-          marginR: EdgeInsets.symmetric(
-              horizontal: w * 0.03, ),
-          borderRadius: w * 0.03,
-          backgroundColor: Colors.white12,
-          currentIndex: _selectedIndex,
-          dotIndicatorColor: Colors.white38,
-          unselectedItemColor: Colors.grey[400],
-          // splashBorderRadius: 50,
-          onTap: _onItemTapped,
-          items: [
-
-            DotNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                size: w * 0.06,
+        bottomNavigationBar: Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+          child: BottomBarInspiredFancy(
+                titleStyle: const TextStyle(color: Colors.white),
+                items: const [
+          TabItem(
+            icon: Icons.home, // Using IconData directly
+            title: "Home",
+          ),
+          TabItem(
+            icon: CupertinoIcons.arrow_2_circlepath, // Using IconData directly
+            title: "Pending",
+          ),
+          TabItem(
+            icon: CupertinoIcons.chart_bar, // Using IconData directly
+            title: "Report",
+          ),
+          TabItem(
+            icon: Icons.settings, // Using IconData directly
+            title: "Settings",
+          ),
+                ], backgroundColor: Colors.black, color: Colors.white, colorSelected: Colors.blueAccent,
+                // Other properties...
               ),
-            ),
-
-
-            DotNavigationBarItem(
-              icon: Icon(
-                CupertinoIcons.arrow_2_circlepath,
-                size: w * 0.06,
-              ),
-
-            ),
-
-
-            DotNavigationBarItem(
-              icon: Icon(
-                CupertinoIcons.chart_bar,
-                size: w * 0.06,
-              ),
-
-            ),
-
-            DotNavigationBarItem(
-              icon: Icon(
-                Icons.settings,
-                size: w * 0.06,
-              ),
-
-            ),
-          ],
         ),
-      ),
-    );
+
+    ));
   }
 }

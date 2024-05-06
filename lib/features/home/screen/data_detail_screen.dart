@@ -28,7 +28,7 @@ class _DataDetailScreenState extends State<DataDetailScreen> {
     },
     {
       "color": const Color(0xff6AC366),
-      "text": "success",
+      "text": "succes",
     }
   ];
   @override

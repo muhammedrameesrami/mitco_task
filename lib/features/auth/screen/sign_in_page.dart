@@ -9,6 +9,7 @@ import 'package:mitco_task/features/model_class/order_model_class.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../core/variables/mediaQuery.dart';
 import '../../home/screen/home_screen.dart';
+import '../../navigation/screen/navigatio_screen.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -31,7 +32,7 @@ class _SignInPageState extends State<SignInPage> {
       // context.read<OrderModelBloc>().add(OrderEvent(orderModel: orderModel));
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen(orderModel: orderModel,)),
+          MaterialPageRoute(builder: (context) => BottomNavigationMobile(orderModel: orderModel,)),
               (route) => false);
     }
   }
@@ -158,7 +159,7 @@ class _SignInPageState extends State<SignInPage> {
                               Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => HomeScreen(orderModel: state.orderModel,)),
+                                      builder: (context) => BottomNavigationMobile(orderModel: state.orderModel,)),
                                       (route) => false);
                             }
 

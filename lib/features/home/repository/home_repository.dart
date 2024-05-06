@@ -18,12 +18,12 @@ class HomeRepository {
     });
   }
 
- Future<AggregateQuery> getCount({required String orderId}) async {
+ Future<AggregateQuerySnapshot> getCount({required String orderId,required String status}) async {
    final count=await FirebaseFirestore.instance
-        .collection('order').count()
+        .collection('order').where('status',isEqualTo: status).count()
         .get();
-   final c=count.query.count();
-   return c;
+
+   return count;
   }
 
 }
