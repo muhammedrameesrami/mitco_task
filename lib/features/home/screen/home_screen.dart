@@ -394,7 +394,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     stream: HomeController(
                             repository: HomeRepository(
                                 firestore: FirebaseFirestore.instance))
-                        .getOrder(orderId: widget.orderModel.orderId),
+                        .getOrder(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(

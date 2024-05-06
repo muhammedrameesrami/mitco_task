@@ -7,7 +7,7 @@ class HomeRepository {
   HomeRepository({required FirebaseFirestore firestore})
       : _firestore = firestore;
 
-  Stream<List<OrderModel>> getOrder({required String orderId}) {
+  Stream<List<OrderModel>> getOrder() {
     return FirebaseFirestore.instance
         .collection('order')
         .snapshots()

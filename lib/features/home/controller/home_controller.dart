@@ -7,8 +7,8 @@ class HomeController {
   HomeController({required HomeRepository repository})
       : _repository = repository;
 
-  Stream<List<OrderModel>> getOrder({required String orderId}) {
-    return _repository.getOrder(orderId: orderId);
+  Stream<List<OrderModel>> getOrder() {
+    return _repository.getOrder();
   }
   Future<AggregateQuerySnapshot> getCount({required String orderId,required String status}) async {
     return _repository.getCount(orderId: orderId,status: status);
