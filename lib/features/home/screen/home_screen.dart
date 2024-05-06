@@ -284,7 +284,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             if(snapshot.hasError){
                               return Text('error');
                             }
-                            if(snapshot.connectionState==ConnectionState.done){
+                            if(snapshot.connectionState==ConnectionState.done&&snapshot!=null){
                               return Container(
                                 height: h * 0.17,
                                 width: w * 0.31,
@@ -326,9 +326,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ],
                                 ),
                               );
-                            }else{
-                              return Center(child: CircularProgressIndicator(),);
                             }
+
+                              return Center(child: CircularProgressIndicator(),);
+
 
                           }
                         ),

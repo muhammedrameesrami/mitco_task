@@ -9,6 +9,7 @@ import 'features/auth/controller/Auth_controller.dart';
 import 'features/auth/repository/Auth_repositorry.dart';
 import 'features/auth/screen/bloc/auth_screen_bloc.dart';
 import 'features/auth/screen/sign_in_page.dart';
+import 'features/navigation/screen/bloc/bottom_navigation_bloc.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -33,6 +34,8 @@ class MyApp extends StatelessWidget {
               controller: AuthController(
                   repository:
                   AuthRepository(firebaseAuth: FirebaseAuth.instance, firestore: FirebaseFirestore.instance)))),
+      BlocProvider(
+          create: (context) => BottomNavigationBloc()),
 
     ],
       child: MaterialApp(
