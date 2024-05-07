@@ -123,7 +123,7 @@ class _SignInPageState extends State<SignInPage> {
                       color: Colors.white12,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: TextFormField(
+                    child: TextFormField(obscureText: true,
                       controller: password,
                       style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(

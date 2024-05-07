@@ -93,7 +93,9 @@ class _SetttingScreenState extends State<SetttingScreen> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ChangePasswordScreen()));
+                        builder: (context) => ChangePasswordScreen(
+                              orderModel: widget.orderModel,
+                            )));
               },
               child: Container(
                 height: h * 0.09,
